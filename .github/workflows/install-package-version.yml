@@ -1,0 +1,26 @@
+name: Install Package Version
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+jobs:
+  default:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install Salesforce CLI
+        run: |
+          npm install --global sfdx-cli
+          sfdx --version
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Authenticate target org
+        run: |
+          sfdx force:auth:sfdxurl:store --setdefaultusername --sfdxurlfile <(echo "${{ secrets.SFDX_AUTH_URL }}")
+      - name: Install package version in target org
+        run: |
+          sfdx force:package:install --publishwait 10 --wait 60 -p "hutte-demo-cicd-unlocked-package@${GITHUB_REF_NAME/v/}-0"

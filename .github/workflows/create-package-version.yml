@@ -1,0 +1,27 @@
+name: Create Package Version
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  default:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install Salesforce CLI
+        run: |
+          npm install --global sfdx-cli
+          sfdx --version
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Authenticate Dev Hub org
+        run: |
+          sfdx force:auth:sfdxurl:store -a devhub --setdefaultdevhubusername --sfdxurlfile <(echo "${{ secrets.SFDX_AUTH_URL }}")
+      - name: Create package version
+        run: |
+          npx -p @semantic-release/changelog -p @semantic-release/git -p semantic-release-sfdx -p semantic-release semantic-release
