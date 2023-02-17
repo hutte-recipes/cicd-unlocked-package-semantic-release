@@ -32,3 +32,5 @@ jobs:
         run: |
           npx -p semantic-release-sfdx -p @semantic-release/git -p @semantic-release/exec -p semantic-release semantic-release
           # This sets the environment variable PACKAGE_VERSION_ID if a package version has been published
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
