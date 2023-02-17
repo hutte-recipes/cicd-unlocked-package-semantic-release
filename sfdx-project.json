@@ -1,18 +1,19 @@
 {
-  "packageDirectories": [
-    {
-      "path": "force-app",
-      "default": true,
-      "package": "hutte-demo-cicd-unlocked-package",
-      "versionName": "ver 0.1",
-      "versionNumber": "0.1.0.NEXT"
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "hutte-demo-cicd-unlocked-package",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "name": "hutte-demo-cicd-unlocked-package",
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "55.0",
+    "packageAliases": {
+        "hutte-demo-cicd-unlocked-package": "0Ho68000000XZEJCA4",
+        "hutte-demo-cicd-unlocked-package@1.0.2-0": "04t68000000xTpdAAE"
     }
-  ],
-  "name": "hutte-demo-cicd-unlocked-package",
-  "namespace": "",
-  "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "55.0",
-  "packageAliases": {
-    "hutte-demo-cicd-unlocked-package": "0Ho68000000XZEJCA4"
-  }
 }
