@@ -1,13 +1,20 @@
-name: Create Package Version
+name: main
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+  workflow_call:
+    outputs:
+      packageVersion:
+        type: string
+        description: "If a package version has been published, this is the package version x.x.x"
+        value: ${{ jobs.default.outputs.packageVersion }}
 
 jobs:
   default:
+    name: Create Package Version
     runs-on: ubuntu-latest
+    outputs:
+      packageVersion: ${{ steps.default.outputs.packageVersion }}
     steps:
       - uses: actions/setup-node@v3
         with:
@@ -21,7 +28,9 @@ jobs:
           fetch-depth: 0
       - name: Authenticate Dev Hub org
         run: |
-          sfdx force:auth:sfdxurl:store -a devhub --setdefaultdevhubusername --sfdxurlfile <(echo "${{ secrets.SFDX_AUTH_URL }}")
+          sfdx auth sfdxurl store -a devhub --setdefaultdevhubusername --sfdxurlfile <(echo "${{ secrets.SFDX_AUTH_URL }}")
       - name: Create package version
         run: |
-          npx -p @semantic-release/changelog -p @semantic-release/git -p semantic-release-sfdx -p semantic-release semantic-release
+          npx -p semantic-release-sfdx -p semantic-release semantic-release
+          # This sets the environment variable PACKAGE_VERSION_ID if a package version has been published
+          echo "packageVersion=${}" >> ${GITHUB_OUTPUT}

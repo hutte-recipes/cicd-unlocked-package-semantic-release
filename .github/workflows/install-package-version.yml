@@ -2,9 +2,17 @@ name: Install Package Version
 
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - v**
+    inputs:
+      packageVersion:
+        description: "The package version to install"
+        required: true
+  workflow_call:
+    inputs:
+      packageVersion:
+        type: string
+        description: "The package version to install"
+        required: true
+
 jobs:
   default:
     runs-on: ubuntu-latest
@@ -21,7 +29,7 @@ jobs:
           fetch-depth: 0
       - name: Authenticate target org
         run: |
-          sfdx force:auth:sfdxurl:store --setdefaultusername --sfdxurlfile <(echo "${{ secrets.SFDX_AUTH_URL }}")
+          sfdx auth sfdxurl store --setdefaultusername --sfdxurlfile <(echo "${{ secrets.SFDX_AUTH_URL }}")
       - name: Install package version in target org
         run: |
-          sfdx force:package:install --publishwait 10 --wait 60 -p "hutte-demo-cicd-unlocked-package@${GITHUB_REF_NAME/v/}-0"
+          sfdx package install --publish-wait 20 --wait 60 -p "${{ inputs.packageVersion }}"

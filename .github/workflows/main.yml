@@ -1,0 +1,20 @@
+name: main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-package-version:
+    name: Run Create Package Version Workflow
+    uses: ./.github/workflows/create-package-version.yml
+    secrets: inherit
+  install-package-version:
+    name: Run Install Package Version Workflow
+    uses: ./.github/workflows/install-package-version.yml
+    needs: create-package-version
+    if: ${{ needs.create-package-version.outputs.packageVersion != "" }}
+    with:
+      packageVersion: "${{ needs.create-package-version.outputs.packageVersion }}"
+    secrets: inherit
