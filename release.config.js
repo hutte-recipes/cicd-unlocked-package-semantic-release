@@ -10,7 +10,12 @@ module.exports = {
         promote: process.env.GITHUB_REF_NAME === "main",
       },
     ],
-    "@semantic-release/git",
+    [
+      "@semantic-release/git",
+      {
+        assets: ["sfdx-project.json"],
+      },
+    ],
     "@semantic-release/github",
     [
       "@semantic-release/exec",
