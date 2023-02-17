@@ -5,7 +5,6 @@ on:
   workflow_call:
     outputs:
       packageVersion:
-        type: string
         description: "If a package version has been published, this is the package version x.x.x"
         value: ${{ jobs.default.outputs.packageVersion }}
 
