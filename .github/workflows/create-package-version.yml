@@ -32,4 +32,3 @@ jobs:
         run: |
           npx -p semantic-release-sfdx -p semantic-release semantic-release
           # This sets the environment variable PACKAGE_VERSION_ID if a package version has been published
-          echo "packageVersion=${}" >> ${GITHUB_OUTPUT}
