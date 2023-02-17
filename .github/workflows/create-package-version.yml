@@ -13,7 +13,7 @@ jobs:
     name: Create Package Version
     runs-on: ubuntu-latest
     outputs:
-      packageVersion: ${{ steps.default.outputs.packageVersion }}
+      packageVersion: ${{ steps.create-package-version.outputs.packageVersion }}
     steps:
       - uses: actions/setup-node@v3
         with:
@@ -28,7 +28,8 @@ jobs:
       - name: Authenticate Dev Hub org
         run: |
           sfdx auth sfdxurl store -a devhub --setdefaultdevhubusername --sfdxurlfile <(echo "${{ secrets.SFDX_AUTH_URL }}")
-      - name: Create package version
+      - id: create-package-version
+        name: Create package version
         run: |
           npx -p semantic-release-sfdx -p @semantic-release/git -p @semantic-release/exec -p semantic-release semantic-release
           # This sets the environment variable PACKAGE_VERSION_ID if a package version has been published
