@@ -10,6 +10,7 @@ module.exports = {
         promote: process.env.GITHUB_REF_NAME === "main",
       },
     ],
+    "@semantic-release/git",
     "@semantic-release/github",
     [
       "@semantic-release/exec",
