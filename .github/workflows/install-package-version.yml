@@ -32,4 +32,5 @@ jobs:
           sfdx auth sfdxurl store --setdefaultusername --sfdxurlfile <(echo "${{ secrets.SFDX_AUTH_URL }}")
       - name: Install package version in target org
         run: |
-          sfdx package install --publish-wait 20 --wait 60 -p "${{ inputs.packageVersion }}"
+          packageName="$(node -pe 'JSON.parse(fs.readFileSync(0, "utf8")).name' < sfdx-project.json)"
+          sfdx package install --publish-wait 20 --wait 60 -p "${packageName}@${{ inputs.packageVersion }}-0"
