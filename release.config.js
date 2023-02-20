@@ -20,12 +20,11 @@ module.exports = {
     [
       "@semantic-release/exec",
       {
-        publishCmd: `
-export PKG_NAME="$(node -pe 'JSON.parse(fs.readFileSync("sfdx-project.json", "utf8")).packageDirectories.find(p => p.default).package')";
-export PKG_VERSION="${nextRelease.version}";
-packageVersionId="$(node -pe 'JSON.parse(fs.readFileSync("sfdx-project.json", "utf8")).packageAliases[process.env.PKG_NAME + "@" + process.env.PKG_VERSION + "-0"]')";
-echo packageVersionId="$packageVersionId" >> ${process.env.GITHUB_OUTPUT}
-`,
+        publishCmd:
+          'export PKG_NAME="$(node -pe \'JSON.parse(fs.readFileSync("sfdx-project.json", "utf8")).packageDirectories.find(p => p.default).package\')"; \
+export PKG_VERSION="${nextRelease.version}"; \
+packageVersionId="$(node -pe \'JSON.parse(fs.readFileSync("sfdx-project.json", "utf8")).packageAliases[process.env.PKG_NAME + "@" + process.env.PKG_VERSION + "-0"]\')"; \
+echo packageVersionId="$packageVersionId" >> ${process.env.GITHUB_OUTPUT}',
       },
     ],
   ],
