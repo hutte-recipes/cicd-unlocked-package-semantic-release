@@ -4,16 +4,16 @@ on:
   workflow_dispatch:
   workflow_call:
     outputs:
-      packageVersion:
-        description: "If a package version has been published, this is the package version x.x.x"
-        value: ${{ jobs.default.outputs.packageVersion }}
+      packageVersionId:
+        description: "If a package version has been published, this is the package version id (04t)"
+        value: ${{ jobs.default.outputs.packageVersionId }}
 
 jobs:
   default:
     name: Create Package Version
     runs-on: ubuntu-latest
     outputs:
-      packageVersion: ${{ steps.create-package-version.outputs.packageVersion }}
+      packageVersionId: ${{ steps.create-package-version.outputs.packageVersionId }}
     steps:
       - uses: actions/setup-node@v3
         with:
@@ -32,5 +32,6 @@ jobs:
         name: Create package version
         run: |
           npx -p semantic-release-sfdx -p @semantic-release/git -p @semantic-release/exec -p semantic-release semantic-release
+          # packageVersionId will be set as output for the GH action (see release.config.js)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

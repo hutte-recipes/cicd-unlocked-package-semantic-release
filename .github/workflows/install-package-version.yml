@@ -4,13 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       packageVersion:
-        description: "The package version to install"
+        description: "ID (starts with 04t) or alias of the package version to install"
         required: true
   workflow_call:
     inputs:
       packageVersion:
         type: string
-        description: "The package version to install"
+        description: "ID (starts with 04t) or alias of the package version to install"
         required: true
 
 jobs:
@@ -32,5 +32,4 @@ jobs:
           sfdx auth sfdxurl store --setdefaultusername --sfdxurlfile <(echo "${{ secrets.SFDX_AUTH_URL }}")
       - name: Install package version in target org
         run: |
-          packageName="$(node -pe 'JSON.parse(fs.readFileSync(0, "utf8")).name' < sfdx-project.json)"
-          sfdx package install --publish-wait 20 --wait 60 -p "${packageName}@${{ inputs.packageVersion }}-0"
+          sfdx package install --publish-wait 20 --wait 60 --package "${{ inputs.packageVersion }}"
