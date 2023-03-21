@@ -27,7 +27,7 @@ jobs:
           fetch-depth: 0
       - name: Authenticate Dev Hub org
         run: |
-          sfdx auth sfdxurl store -a devhub --setdefaultdevhubusername --sfdxurlfile <(echo "${{ secrets.SFDX_AUTH_URL }}")
+          sfdx org login sfdx-url --set-default-dev-hub --sfdx-url-file <(echo "${{ secrets.SFDX_AUTH_URL_DEVHUB }}")
       - id: create-package-version
         name: Create package version
         run: |
