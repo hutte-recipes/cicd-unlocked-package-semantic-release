@@ -29,7 +29,7 @@ jobs:
           fetch-depth: 0
       - name: Authenticate target org
         run: |
-          sfdx org login sfdx-url --set-default --sfdx-url-file <(echo "${{ secrets.SFDX_AUTH_URL_PRODUCTION }}")
+          sfdx org login sfdx-url --set-default --sfdx-url-file <(echo "${{ secrets.SFDX_AUTH_URL_TARGET_ORG }}")
       - name: Install package version in target org
         run: |
           sfdx package install --publish-wait 20 --wait 60 --package "${{ inputs.packageVersion }}"
