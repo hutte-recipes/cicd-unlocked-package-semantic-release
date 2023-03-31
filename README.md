@@ -18,7 +18,7 @@ Create the GitHub Action Secrets (`Settings > Secrets and variables > Actions > 
 sfdx org display --verbose --json -o <MY_DEVHUB_ALIAS>
 ```
 
-> NOTE:
+> **Note**
 >
 > The following assumes that the Dev Hub org where the Unlocked Package information gets stored and the Production org where the package gets installed are the same org.
 
