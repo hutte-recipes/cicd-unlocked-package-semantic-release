@@ -5,8 +5,8 @@
 ## Prerequisites
 
 - a GitHub repository with a valid sfdx project
-- a target org authenticated with sfdx locally
-- a Dev Hub org authenticated with sfdx locally
+- a target org authenticated with Salesforce CLI locally
+- a Dev Hub org authenticated with Salesforce CLI locally
 
 ## Steps
 
@@ -15,7 +15,7 @@
 Create the GitHub Action Secrets (`Settings > Secrets and variables > Actions > New repository secret`):
 
 ```console
-sfdx org display --verbose --json -o <MY_DEVHUB_ALIAS>
+sf org display --verbose --json -o <MY_DEVHUB_ALIAS>
 ```
 
 > **Note**
@@ -34,7 +34,7 @@ Copy the value of `sfdxAuthUrl` to the clipboard.
 Create an Unlocked Package:
 
 ```console
-sfdx package create -t Unlocked --no-namespace --org-dependent --path force-app -n "${PACKAGE_NAME}" --description "${REPO_URL}" -v "${COMPANY_DEVHUB}"
+sf package create -t Unlocked --no-namespace --org-dependent --path force-app -n "${PACKAGE_NAME}" --description "${REPO_URL}" -v "${COMPANY_DEVHUB}"
 git add sfdx-project.json
 ```
 
@@ -103,16 +103,15 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Install Salesforce CLI
+      - name: Setup Salesforce CLI
         run: |
-          npm install --global sfdx-cli
-          sfdx --version
-      - uses: actions/checkout@v3
+          npm install --global @salesforce/cli
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Authenticate Dev Hub org
         run: |
-          sfdx org login sfdx-url --set-default-dev-hub --sfdx-url-file <(echo "${{ secrets.SFDX_AUTH_URL_DEVHUB }}")
+          sf org login sfdx-url --set-default-dev-hub --sfdx-url-file <(echo "${{ secrets.SFDX_AUTH_URL_DEVHUB }}")
       - id: create-package-version
         name: Create package version
         run: |
@@ -147,19 +146,15 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Install Salesforce CLI
+      - name: Setup Salesforce CLI
         run: |
-          npm install --global sfdx-cli
-          sfdx --version
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+          npm install --global @salesforce/cli
       - name: Authenticate target org
         run: |
-          sfdx org login sfdx-url --set-default --sfdx-url-file <(echo "${{ secrets.SFDX_AUTH_URL_TARGET_ORG }}")
+          sf org login sfdx-url --set-default --sfdx-url-file <(echo "${{ secrets.SFDX_AUTH_URL_TARGET_ORG }}")
       - name: Install package version in target org
         run: |
-          sfdx package install --publish-wait 20 --wait 60 --package "${{ inputs.packageVersion }}"
+          sf package install --publish-wait 20 --wait 60 --package "${{ inputs.packageVersion }}"
 ```
 
 `.github/workflows/main.yml`
@@ -189,5 +184,5 @@ jobs:
 
 ### Step 5
 
-- Create a PR with a commit message like "fix: typo in help text" and verify the Action was run successfully
+- Create a PR with a commit message like "fix: typo in help text"
 - Merge the PR and verify the Action was run successfully

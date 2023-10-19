@@ -18,16 +18,15 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Install Salesforce CLI
+      - name: Setup Salesforce CLI
         run: |
-          npm install --global sfdx-cli
-          sfdx --version
-      - uses: actions/checkout@v3
+          npm install --global @salesforce/cli
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Authenticate Dev Hub org
         run: |
-          sfdx org login sfdx-url --set-default-dev-hub --sfdx-url-file <(echo "${{ secrets.SFDX_AUTH_URL_DEVHUB }}")
+          sf org login sfdx-url --set-default-dev-hub --sfdx-url-file <(echo "${{ secrets.SFDX_AUTH_URL_DEVHUB }}")
       - id: create-package-version
         name: Create package version
         run: |
