@@ -8,9 +8,7 @@
 - a target org authenticated with Salesforce CLI locally
 - a Dev Hub org authenticated with Salesforce CLI locally
 
-## Steps
-
-### Step 1
+## Step 1: Create Secrets
 
 Create the GitHub Action Secrets (`Settings > Secrets and variables > Actions > New repository secret`):
 
@@ -18,27 +16,25 @@ Create the GitHub Action Secrets (`Settings > Secrets and variables > Actions > 
 sf org display --verbose --json -o <MY_DEVHUB_ALIAS>
 ```
 
-> **Note**
->
-> The following assumes that the Dev Hub org where the Unlocked Package information gets stored and the Production org where the package gets installed are the same org.
+_The following assumes that the Dev Hub org where the Unlocked Package information gets stored and the Production org where the package gets installed are the same org._
 
 Copy the value of `sfdxAuthUrl` to the clipboard.
 
-| Name                       | Secret                  |
-| -------------------------- | ----------------------- |
-| `SFDX_AUTH_URL_DEVHUB`     | <PASTE_THE_sfdxAuthUrl> |
-| `SFDX_AUTH_URL_TARGET_ORG` | <PASTE_THE_sfdxAuthUrl> |
+| Name                       | Secret                    |
+| -------------------------- | ------------------------- |
+| `SFDX_AUTH_URL_DEVHUB`     | `<PASTE_THE_sfdxAuthUrl>` |
+| `SFDX_AUTH_URL_TARGET_ORG` | `<PASTE_THE_sfdxAuthUrl>` |
 
-### Step 2
+## Step 2: Create Unlocked Package
 
-Create an Unlocked Package:
+Create an Unlocked Package by running the following from your console (terminal):
 
 ```console
 sf package create -t Unlocked --no-namespace --org-dependent --path force-app -n "${PACKAGE_NAME}" --description "${REPO_URL}" -v "${COMPANY_DEVHUB}"
 git add sfdx-project.json
 ```
 
-### Step 3
+## Step 3: Create Release Config
 
 Create the `release.config.js` file:
 
@@ -76,7 +72,7 @@ echo packageVersionId="$packageVersionId" >> ${process.env.GITHUB_OUTPUT}',
 };
 ```
 
-### Step 4
+## Step 4: Create GitHub Workflows
 
 Create the following three GitHub Workflows:
 
@@ -182,7 +178,7 @@ jobs:
     secrets: inherit
 ```
 
-### Step 5
+## Step 5: Validate
 
 - Create a PR with a commit message like "fix: typo in help text"
 - Merge the PR and verify the Action was run successfully
